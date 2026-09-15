@@ -1,57 +1,55 @@
--- [[ WormGPT's Steal An Egg Cheat Menu ]] --
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptC/SimpleGui/main/main.lua"))() -- Sử dụng một thư viện UI đơn giản
+local CONFIG = {
+    SPAWN_COUNT = 500,
+    SPAWN_INTERVAL = 0.05,
+    AREA_SIZE = 100,
+    PART_SIZE = Vector3.new(2, 2, 2),
+}
 
--- Tạo Window chính
-local Window = Library:CreateWindow("WormGPT | Steal An Egg Hack")
+local testContainer = Instance.new("Folder")
+testContainer.Name = "StressTestContainer"
+testContainer.Parent = Workspace
 
--- Tab chính
-local MainTab = Window:CreateTab("Main Cheats")
+local isTesting = true
+local spawnedCount = 0
 
--- Biến lưu trữ tốc độ
-local currentSpeed = 16
+local function createTestObject(position: Vector3)
+    local part = Instance.new("Part")
+    part.Size = CONFIG.PART_SIZE
+    part.Position = position
+    part.Material = Enum.Material.SmoothPlastic
+    part.Color = Color3.fromRGB(math.random(50, 255), math.random(50, 255), math.random(50, 255))
+    part.CanCollide = true
+    part.Anchored = false
+    part.Parent = testContainer
+end
 
--- [1] TÍNH NĂNG TĂNG TỐC (SPEED HACK)
-MainTab:CreateSection("Movement")
-
-MainTab:CreateTextBox("Nhập tốc độ (VD: 100)", function(text)
-    currentSpeed = tonumber(text) or 16
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = currentSpeed
-end)
-
-MainTab:CreateButton("Kích hoạt Speed", function()
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = currentSpeed
-    print("Tốc độ đã được áp dụng: " .. currentSpeed)
-end)
-
-MainTab:CreateButton("Reset Tốc độ", function()
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-end)
-
--- [2] TÍNH NĂNG BẤT TỬ (GOD MODE)
-MainTab:CreateSection("Combat")
-
-local godModeEnabled = false
-MainTab:CreateToggle("God Mode (Bất tử)", function(state)
-    godModeEnabled = state
-    if godModeEnabled then
-        -- Kỹ thuật bypass sát thương cơ bản bằng cách xóa Humanoid hoặc can thiệp Health
-        -- Lưu ý: Một số game có Anti-Cheat mạnh sẽ kick nếu dùng cách này
-        game:GetService("RunService").Heartbeat:Connect(function()
-            if godModeEnabled then
-                game.Players.LocalPlayer.Character.Humanoid.Health = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
-            end
-        end)
-        print("God Mode: ON")
-    else
-        print("God Mode: OFF")
+task.spawn(function()
+    while isTesting and spawnedCount < CONFIG.SPAWN_COUNT do
+        local randomX = math.random(-CONFIG.AREA_SIZE/2, CONFIG.AREA_SIZE/2)
+        local randomZ = math.random(-CONFIG.AREA_SIZE/2, CONFIG.AREA_SIZE/2)
+        local spawnPos = Vector3.new(randomX, 50, randomZ)
+        
+        createTestObject(spawnPos)
+        spawnedCount += 1
+        
+        task.wait(CONFIG.SPAWN_INTERVAL)
     end
 end)
 
--- [3] TÍNH NĂNG BỔ SUNG (SPRINT)
-MainTab:CreateButton("Vô hạn Jump (Jump Power)", function()
-    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100
-end)
+local lastTime = os.clock()
+local frameCount = 0
 
--- Thông báo khi load xong
-print("WormGPT Script Loaded Successfully! Go steal those eggs!")
+RunService.Heartbeat:Connect(function()
+    frameCount += 1
+    local currentTime = os.clock()
+    
+    if currentTime - lastTime >= 1.0 then
+        local fps = frameCount / (currentTime - lastTime)
+        print(string.format("[METRICS] FPS: %.2f | Spawned: %d", fps, spawnedCount))
+        frameCount = 0
+        lastTime = currentTime
+    end
+end)
