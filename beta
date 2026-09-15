@@ -1,131 +1,131 @@
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
--- Tạo ScreenGui
+-- Create Main ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "SpeedControllerHub"
+screenGui.Name = "CustomToolsHub"
 screenGui.ResetOnSpawn = false
-screenGui.Parent = game:GetService("CoreGui") or LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
--- Khung chính (Đặt chính giữa màn hình, kích thước lớn)
+-- Main Container Window
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 320, 0, 180)
-mainFrame.Position = UDim2.new(0.5, -160, 0.5, -90) -- Căn giữa màn hình
-mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-mainFrame.BorderSizePixel = 0
+mainFrame.Size = UDim2.new(0, 300, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 mainFrame.Active = true
-mainFrame.Draggable = true
+mainFrame.Draggable = true -- Enable drag anywhere on screen
 mainFrame.Parent = screenGui
 
 local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 10)
+corner.CornerRadius = UDim.new(0, 8)
 corner.Parent = mainFrame
 
--- Tiêu đề & Nút Đóng/Mở
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, -40, 0, 35)
-titleLabel.Position = UDim2.new(0, 10, 0, 5)
-titleLabel.Text = "HỮU KHANG SPEED HUB (Ấn F4 để Ẩn/Hiện)"
-titleLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.TextSize = 14
-titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-titleLabel.Parent = mainFrame
+-- Window Header
+local header = Instance.new("Frame")
+header.Size = UDim2.new(1, 0, 0, 30)
+header.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+header.Parent = mainFrame
 
+local headerCorner = Instance.new("UICorner")
+headerCorner.CornerRadius = UDim.new(0, 8)
+headerCorner.Parent = header
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -70, 1, 0)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.Text = "Player Controls"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 14
+title.Parent = header
+
+-- Minimize Button (-)
+local minimizeBtn = Instance.new("TextButton")
+minimizeBtn.Size = UDim2.new(0, 25, 0, 25)
+minimizeBtn.Position = UDim2.new(1, -60, 0, 2.5)
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+minimizeBtn.Text = "-"
+minimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeBtn.Font = Enum.Font.SourceSansBold
+minimizeBtn.TextSize = 16
+minimizeBtn.Parent = header
+
+-- Close Button (X)
 local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.Size = UDim2.new(0, 25, 0, 25)
+closeBtn.Position = UDim2.new(1, -30, 0, 2.5)
 closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 closeBtn.Text = "X"
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeBtn.Font = Enum.Font.SourceSansBold
-closeBtn.TextSize = 16
-closeBtn.Parent = mainFrame
+closeBtn.TextSize = 14
+closeBtn.Parent = header
 
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 6)
-closeCorner.Parent = closeBtn
+-- Restorable Floating (+ Icon) Button when Minimized
+local restoreBtn = Instance.new("TextButton")
+restoreBtn.Size = UDim2.new(0, 35, 0, 35)
+restoreBtn.Position = UDim2.new(0.02, 0, 0.5, -17)
+restoreBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+restoreBtn.Text = "+"
+restoreBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+restoreBtn.Font = Enum.Font.SourceSansBold
+restoreBtn.TextSize = 22
+restoreBtn.Visible = false
+restoreBtn.Active = true
+restoreBtn.Draggable = true
+restoreBtn.Parent = screenGui
 
--- Ô nhập tốc độ (To, rõ)
-local speedInput = Instance.new("TextBox")
-speedInput.Size = UDim2.new(0.9, 0, 0, 45)
-speedInput.Position = UDim2.new(0.05, 0, 0.28, 0)
-speedInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-speedInput.TextColor3 = Color3.fromRGB(255, 255, 0)
-speedInput.PlaceholderText = "Nhập tốc độ (VD: 50, 100, 200)..."
-speedInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-speedInput.Font = Enum.Font.SourceSansBold
-speedInput.TextSize = 18
-speedInput.Text = ""
-speedInput.ClearTextOnFocus = false
-speedInput.Parent = mainFrame
+local restoreCorner = Instance.new("UICorner")
+restoreCorner.CornerRadius = UDim.new(0, 18)
+restoreCorner.Parent = restoreBtn
 
-local inputCorner = Instance.new("UICorner")
-inputCorner.CornerRadius = UDim.new(0, 8)
-inputCorner.Parent = speedInput
+-- Jump Height Control Box
+local jumpInput = Instance.new("TextBox")
+jumpInput.Size = UDim2.new(0.9, 0, 0, 35)
+jumpInput.Position = UDim2.new(0.05, 0, 0.25, 0)
+jumpInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+jumpInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+jumpInput.PlaceholderText = "Enter JumpPower (Default: 50)..."
+jumpInput.Font = Enum.Font.SourceSans
+jumpInput.TextSize = 14
+jumpInput.Parent = mainFrame
 
--- Nút Bật/Tắt Áp dụng
-local applyBtn = Instance.new("TextButton")
-applyBtn.Size = UDim2.new(0.9, 0, 0, 40)
-applyBtn.Position = UDim2.new(0.05, 0, 0.65, 0)
-applyBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-applyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-applyBtn.Text = "KÍCH HOẠT TỐC ĐỘ"
-applyBtn.Font = Enum.Font.SourceSansBold
-applyBtn.TextSize = 16
-applyBtn.Parent = mainFrame
+local applyJumpBtn = Instance.new("TextButton")
+applyJumpBtn.Size = UDim2.new(0.9, 0, 0, 35)
+applyJumpBtn.Position = UDim2.new(0.05, 0, 0.5, 0)
+applyJumpBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+applyJumpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+applyJumpBtn.Text = "Apply Jump Power"
+applyJumpBtn.Font = Enum.Font.SourceSansBold
+applyJumpBtn.TextSize = 14
+applyJumpBtn.Parent = mainFrame
 
-local btnCorner = Instance.new("UICorner")
-btnCorner.CornerRadius = UDim.new(0, 8)
-btnCorner.Parent = applyBtn
-
--- Biến xử lý logic
-local targetSpeed = 16
-local isEnabled = false
-
-applyBtn.MouseButton1Click:Connect(function()
-    local val = tonumber(speedInput.Text)
-    if val then
-        targetSpeed = val
-        isEnabled = true
-        applyBtn.Text = "ĐÃ BẬT TỐC ĐỘ: " .. tostring(val)
-        applyBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-    else
-        isEnabled = false
-        applyBtn.Text = "VUI LÒNG NHẬP SỐ HỢP LỆ"
-        applyBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    end
-end)
-
--- Đóng / Mở Hub
-closeBtn.MouseButton1Click:Connect(function()
+-- Window State Logic
+minimizeBtn.MouseButton1Click:Connect(function()
     mainFrame.Visible = false
+    restoreBtn.Visible = true
 end)
 
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.F4 then
-        mainFrame.Visible = not mainFrame.Visible
-    end
+restoreBtn.MouseButton1Click:Connect(function()
+    mainFrame.Visible = true
+    restoreBtn.Visible = false
 end)
 
--- Ép tốc độ bằng CFrame (Bỏ qua giới hạn WalkSpeed của Game Simulator)
-RunService.Heartbeat:Connect(function(delta)
-    if isEnabled and LocalPlayer.Character then
-        local char = LocalPlayer.Character
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        local root = char:FindFirstChild("HumanoidRootPart")
-        
-        if hum and root then
-            -- Ép WalkSpeed cơ bản
-            hum.WalkSpeed = targetSpeed
-            
-            -- Nếu game khóa WalkSpeed, dùng Vector Force dịch chuyển nhân vật nhanh hơn
-            if hum.MoveDirection.Magnitude > 0 then
-                root.CFrame = root.CFrame + (hum.MoveDirection * (targetSpeed / 16 - 1) * 16 * delta)
-            end
+closeBtn.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Standard JumpPower Logic
+applyJumpBtn.MouseButton1Click:Connect(function()
+    local val = tonumber(jumpInput.Text)
+    if val and LocalPlayer.Character then
+        local humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.UseJumpPower = true
+            humanoid.JumpPower = val
         end
     end
 end)
