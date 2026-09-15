@@ -9,10 +9,10 @@ screenGui.Name = "SpeedControllerHub"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = game:GetService("CoreGui") or LocalPlayer:WaitForChild("PlayerGui")
 
--- Khung chính (Căn giữa màn hình)
+-- Khung chính (Đặt chính giữa màn hình, kích thước lớn)
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 340, 0, 190)
-mainFrame.Position = UDim2.new(0.5, -170, 0.5, -95)
+mainFrame.Size = UDim2.new(0, 320, 0, 180)
+mainFrame.Position = UDim2.new(0.5, -160, 0.5, -90) -- Căn giữa màn hình
 mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 mainFrame.BorderSizePixel = 0
 mainFrame.Active = true
@@ -23,11 +23,11 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 10)
 corner.Parent = mainFrame
 
--- Tiêu đề
+-- Tiêu đề & Nút Đóng/Mở
 local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, -75, 0, 35)
+titleLabel.Size = UDim2.new(1, -40, 0, 35)
 titleLabel.Position = UDim2.new(0, 10, 0, 5)
-titleLabel.Text = "HỮU KHANG SPEED HUB (F4)"
+titleLabel.Text = "HỮU KHANG SPEED HUB (Ấn F4 để Ẩn/Hiện)"
 titleLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
 titleLabel.BackgroundTransparency = 1
 titleLabel.Font = Enum.Font.SourceSansBold
@@ -35,55 +35,21 @@ titleLabel.TextSize = 14
 titleLabel.TextXAlignment = Enum.TextXAlignment.Left
 titleLabel.Parent = mainFrame
 
--- Nút Thu Nhỏ (-)
-local minBtn = Instance.new("TextButton")
-minBtn.Size = UDim2.new(0, 28, 0, 28)
-minBtn.Position = UDim2.new(1, -65, 0, 5)
-minBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-minBtn.Text = "-"
-minBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-minBtn.Font = Enum.Font.SourceSansBold
-minBtn.TextSize = 18
-minBtn.Parent = mainFrame
-
-local minCorner = Instance.new("UICorner")
-minCorner.CornerRadius = UDim.new(0, 6)
-minCorner.Parent = minBtn
-
--- Nút Đóng (X)
 local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.new(0, 28, 0, 28)
-closeBtn.Position = UDim2.new(1, -33, 0, 5)
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 5)
 closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 closeBtn.Text = "X"
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeBtn.Font = Enum.Font.SourceSansBold
-closeBtn.TextSize = 14
+closeBtn.TextSize = 16
 closeBtn.Parent = mainFrame
 
 local closeCorner = Instance.new("UICorner")
 closeCorner.CornerRadius = UDim.new(0, 6)
 closeCorner.Parent = closeBtn
 
--- Nút Mở Lại (+) Dạng Tròn (Di chuyển tự do trên màn hình khi ẩn UI chính)
-local restoreBtn = Instance.new("TextButton")
-restoreBtn.Size = UDim2.new(0, 42, 0, 42)
-restoreBtn.Position = UDim2.new(0.02, 0, 0.4, 0)
-restoreBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-restoreBtn.Text = "+"
-restoreBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-restoreBtn.Font = Enum.Font.SourceSansBold
-restoreBtn.TextSize = 24
-restoreBtn.Visible = false
-restoreBtn.Active = true
-restoreBtn.Draggable = true
-restoreBtn.Parent = screenGui
-
-local restoreCorner = Instance.new("UICorner")
-restoreCorner.CornerRadius = UDim.new(0, 21)
-restoreCorner.Parent = restoreBtn
-
--- Ô nhập tốc độ
+-- Ô nhập tốc độ (To, rõ)
 local speedInput = Instance.new("TextBox")
 speedInput.Size = UDim2.new(0.9, 0, 0, 45)
 speedInput.Position = UDim2.new(0.05, 0, 0.28, 0)
@@ -101,7 +67,7 @@ local inputCorner = Instance.new("UICorner")
 inputCorner.CornerRadius = UDim.new(0, 8)
 inputCorner.Parent = speedInput
 
--- Nút Kích Hoạt Tốc Độ
+-- Nút Bật/Tắt Áp dụng
 local applyBtn = Instance.new("TextButton")
 applyBtn.Size = UDim2.new(0.9, 0, 0, 40)
 applyBtn.Position = UDim2.new(0.05, 0, 0.65, 0)
@@ -121,58 +87,45 @@ local targetSpeed = 16
 local isEnabled = false
 
 applyBtn.MouseButton1Click:Connect(function()
-    local val = tonumber(speedInput.Text)
-    if val then
-        targetSpeed = val
-        isEnabled = true
-        applyBtn.Text = "ĐÃ BẬT TỐC ĐỘ: " .. tostring(val)
-        applyBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-    else
-        isEnabled = false
-        applyBtn.Text = "VUI LÒNG NHẬP SỐ HỢP LỆ"
-        applyBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    end
+    local val = tonumber(speedInput.Text)
+    if val then
+        targetSpeed = val
+        isEnabled = true
+        applyBtn.Text = "ĐÃ BẬT TỐC ĐỘ: " .. tostring(val)
+        applyBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+    else
+        isEnabled = false
+        applyBtn.Text = "VUI LÒNG NHẬP SỐ HỢP LỆ"
+        applyBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    end
 end)
 
--- Xử lý đóng/thu nhỏ/mở giao diện
-minBtn.MouseButton1Click:Connect(function()
-    mainFrame.Visible = false
-    restoreBtn.Visible = true
-end)
-
-restoreBtn.MouseButton1Click:Connect(function()
-    mainFrame.Visible = true
-    restoreBtn.Visible = false
-end)
-
+-- Đóng / Mở Hub
 closeBtn.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
+    mainFrame.Visible = false
 end)
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.F4 then
-        mainFrame.Visible = not mainFrame.Visible
-        if not mainFrame.Visible then
-            restoreBtn.Visible = true
-        else
-            restoreBtn.Visible = false
-        end
-    end
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.F4 then
+        mainFrame.Visible = not mainFrame.Visible
+    end
 end)
 
--- Ép tốc độ
+-- Ép tốc độ bằng CFrame (Bỏ qua giới hạn WalkSpeed của Game Simulator)
 RunService.Heartbeat:Connect(function(delta)
-    if isEnabled and LocalPlayer.Character then
-        local char = LocalPlayer.Character
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        local root = char:FindFirstChild("HumanoidRootPart")
-        
-        if hum and root then
-            hum.WalkSpeed = targetSpeed
-            
-            if hum.MoveDirection.Magnitude > 0 then
-                root.CFrame = root.CFrame + (hum.MoveDirection * (targetSpeed / 16 - 1) * 16 * delta)
-            end
-        end
-    end
+    if isEnabled and LocalPlayer.Character then
+        local char = LocalPlayer.Character
+        local hum = char:FindFirstChildOfClass("Humanoid")
+        local root = char:FindFirstChild("HumanoidRootPart")
+        
+        if hum and root then
+            -- Ép WalkSpeed cơ bản
+            hum.WalkSpeed = targetSpeed
+            
+            -- Nếu game khóa WalkSpeed, dùng Vector Force dịch chuyển nhân vật nhanh hơn
+            if hum.MoveDirection.Magnitude > 0 then
+                root.CFrame = root.CFrame + (hum.MoveDirection * (targetSpeed / 16 - 1) * 16 * delta)
+            end
+        end
+    end
 end)
