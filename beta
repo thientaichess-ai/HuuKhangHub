@@ -1,30 +1,30 @@
 local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 
--- Create Main ScreenGui
+-- Khởi tạo UI
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "CustomToolsHub"
+screenGui.Name = "AdminTestHub"
 screenGui.ResetOnSpawn = false
-screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = game:GetService("CoreGui") or LocalPlayer:WaitForChild("PlayerGui")
 
--- Main Container Window
+-- Khung cửa sổ chính
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 300, 0, 200)
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+mainFrame.Size = UDim2.new(0, 360, 0, 240)
+mainFrame.Position = UDim2.new(0.5, -180, 0.5, -120)
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 mainFrame.Active = true
-mainFrame.Draggable = true -- Enable drag anywhere on screen
+mainFrame.Draggable = true
 mainFrame.Parent = screenGui
 
 local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 8)
 corner.Parent = mainFrame
 
--- Window Header
+-- Thanh tiêu đề (Header Window)
 local header = Instance.new("Frame")
-header.Size = UDim2.new(1, 0, 0, 30)
-header.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+header.Size = UDim2.new(1, 0, 0, 35)
+header.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 header.Parent = mainFrame
 
 local headerCorner = Instance.new("UICorner")
@@ -34,29 +34,29 @@ headerCorner.Parent = header
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -70, 1, 0)
 title.Position = UDim2.new(0, 10, 0, 0)
-title.Text = "Player Controls"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Text = "ADMIN GAME TESTING HUB"
+title.TextColor3 = Color3.fromRGB(0, 255, 127)
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 14
 title.Parent = header
 
--- Minimize Button (-)
+-- Nút Thu nhỏ (-)
 local minimizeBtn = Instance.new("TextButton")
 minimizeBtn.Size = UDim2.new(0, 25, 0, 25)
-minimizeBtn.Position = UDim2.new(1, -60, 0, 2.5)
-minimizeBtn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+minimizeBtn.Position = UDim2.new(1, -60, 0, 5)
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 minimizeBtn.Text = "-"
 minimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 minimizeBtn.Font = Enum.Font.SourceSansBold
 minimizeBtn.TextSize = 16
 minimizeBtn.Parent = header
 
--- Close Button (X)
+-- Nút Đóng (X)
 local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 25, 0, 25)
-closeBtn.Position = UDim2.new(1, -30, 0, 2.5)
+closeBtn.Position = UDim2.new(1, -30, 0, 5)
 closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 closeBtn.Text = "X"
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -64,46 +64,132 @@ closeBtn.Font = Enum.Font.SourceSansBold
 closeBtn.TextSize = 14
 closeBtn.Parent = header
 
--- Restorable Floating (+ Icon) Button when Minimized
+-- Nút (+) Khôi phục UI thu nhỏ (Có thể kéo thả)
 local restoreBtn = Instance.new("TextButton")
-restoreBtn.Size = UDim2.new(0, 35, 0, 35)
-restoreBtn.Position = UDim2.new(0.02, 0, 0.5, -17)
+restoreBtn.Size = UDim2.new(0, 40, 0, 40)
+restoreBtn.Position = UDim2.new(0.02, 0, 0.4, 0)
 restoreBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
 restoreBtn.Text = "+"
 restoreBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 restoreBtn.Font = Enum.Font.SourceSansBold
-restoreBtn.TextSize = 22
+restoreBtn.TextSize = 24
 restoreBtn.Visible = false
 restoreBtn.Active = true
 restoreBtn.Draggable = true
 restoreBtn.Parent = screenGui
 
 local restoreCorner = Instance.new("UICorner")
-restoreCorner.CornerRadius = UDim.new(0, 18)
+restoreCorner.CornerRadius = UDim.new(0, 20)
 restoreCorner.Parent = restoreBtn
 
--- Jump Height Control Box
+-- Thanh TAB Chuyển đổi
+local tabContainer = Instance.new("Frame")
+tabContainer.Size = UDim2.new(1, -20, 0, 30)
+tabContainer.Position = UDim2.new(0, 10, 0, 42)
+tabContainer.BackgroundTransparency = 1
+tabContainer.Parent = mainFrame
+
+local tab1Btn = Instance.new("TextButton")
+tab1Btn.Size = UDim2.new(0.48, 0, 1, 0)
+tab1Btn.Position = UDim2.new(0, 0, 0, 0)
+tab1Btn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+tab1Btn.Text = "Tốc Độ & Nhảy"
+tab1Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+tab1Btn.Font = Enum.Font.SourceSansBold
+tab1Btn.TextSize = 13
+tab1Btn.Parent = tabContainer
+
+local tab2Btn = Instance.new("TextButton")
+tab2Btn.Size = UDim2.new(0.48, 0, 1, 0)
+tab2Btn.Position = UDim2.new(0.52, 0, 0, 0)
+tab2Btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+tab2Btn.Text = "Xuyên Tường (Noclip)"
+tab2Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+tab2Btn.Font = Enum.Font.SourceSansBold
+tab2Btn.TextSize = 13
+tab2Btn.Parent = tabContainer
+
+-- Nội dung TAB 1: Speed & Jump
+local page1 = Instance.new("Frame")
+page1.Size = UDim2.new(1, -20, 0, 150)
+page1.Position = UDim2.new(0, 10, 0, 80)
+page1.BackgroundTransparency = 1
+page1.Parent = mainFrame
+
+local speedInput = Instance.new("TextBox")
+speedInput.Size = UDim2.new(0.65, 0, 0, 32)
+speedInput.Position = UDim2.new(0, 0, 0, 5)
+speedInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+speedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedInput.PlaceholderText = "Nhập WalkSpeed..."
+speedInput.Font = Enum.Font.SourceSans
+speedInput.TextSize = 13
+speedInput.Parent = page1
+
+local applySpeedBtn = Instance.new("TextButton")
+applySpeedBtn.Size = UDim2.new(0.3, 0, 0, 32)
+applySpeedBtn.Position = UDim2.new(0.7, 0, 0, 5)
+applySpeedBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+applySpeedBtn.Text = "Đổi Speed"
+applySpeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+applySpeedBtn.Font = Enum.Font.SourceSansBold
+applySpeedBtn.TextSize = 13
+applySpeedBtn.Parent = page1
+
 local jumpInput = Instance.new("TextBox")
-jumpInput.Size = UDim2.new(0.9, 0, 0, 35)
-jumpInput.Position = UDim2.new(0.05, 0, 0.25, 0)
-jumpInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+jumpInput.Size = UDim2.new(0.65, 0, 0, 32)
+jumpInput.Position = UDim2.new(0, 0, 0, 45)
+jumpInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 jumpInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-jumpInput.PlaceholderText = "Enter JumpPower (Default: 50)..."
+jumpInput.PlaceholderText = "Nhập JumpPower..."
 jumpInput.Font = Enum.Font.SourceSans
-jumpInput.TextSize = 14
-jumpInput.Parent = mainFrame
+jumpInput.TextSize = 13
+jumpInput.Parent = page1
 
 local applyJumpBtn = Instance.new("TextButton")
-applyJumpBtn.Size = UDim2.new(0.9, 0, 0, 35)
-applyJumpBtn.Position = UDim2.new(0.05, 0, 0.5, 0)
-applyJumpBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+applyJumpBtn.Size = UDim2.new(0.3, 0, 0, 32)
+applyJumpBtn.Position = UDim2.new(0.7, 0, 0, 45)
+applyJumpBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+applyJumpBtn.Text = "Đổi Nhảy"
 applyJumpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-applyJumpBtn.Text = "Apply Jump Power"
 applyJumpBtn.Font = Enum.Font.SourceSansBold
-applyJumpBtn.TextSize = 14
-applyJumpBtn.Parent = mainFrame
+applyJumpBtn.TextSize = 13
+applyJumpBtn.Parent = page1
 
--- Window State Logic
+-- Nội dung TAB 2: Noclip Test Map
+local page2 = Instance.new("Frame")
+page2.Size = UDim2.new(1, -20, 0, 150)
+page2.Position = UDim2.new(0, 10, 0, 80)
+page2.BackgroundTransparency = 1
+page2.Visible = false
+page2.Parent = mainFrame
+
+local noclipBtn = Instance.new("TextButton")
+noclipBtn.Size = UDim2.new(1, 0, 0, 40)
+noclipBtn.Position = UDim2.new(0, 0, 0, 10)
+noclipBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+noclipBtn.Text = "NOCLIP (XUYÊN TƯỜNG): TẮT"
+noclipBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+noclipBtn.Font = Enum.Font.SourceSansBold
+noclipBtn.TextSize = 14
+noclipBtn.Parent = page2
+
+-- Logic Chuyển Tab
+tab1Btn.MouseButton1Click:Connect(function()
+    page1.Visible = true
+    page2.Visible = false
+    tab1Btn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+    tab2Btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+end)
+
+tab2Btn.MouseButton1Click:Connect(function()
+    page1.Visible = false
+    page2.Visible = true
+    tab2Btn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+    tab1Btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+end)
+
+-- Logic Thu nhỏ / Đóng UI
 minimizeBtn.MouseButton1Click:Connect(function()
     mainFrame.Visible = false
     restoreBtn.Visible = true
@@ -118,14 +204,42 @@ closeBtn.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Standard JumpPower Logic
+-- Logic Đổi Speed & Jump
+applySpeedBtn.MouseButton1Click:Connect(function()
+    local val = tonumber(speedInput.Text)
+    if val and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        LocalPlayer.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = val
+    end
+end)
+
 applyJumpBtn.MouseButton1Click:Connect(function()
     local val = tonumber(jumpInput.Text)
-    if val and LocalPlayer.Character then
-        local humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.UseJumpPower = true
-            humanoid.JumpPower = val
+    if val and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        local hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+        hum.UseJumpPower = true
+        hum.JumpPower = val
+    end
+end)
+
+-- Logic Noclip (Kiểm tra va chạm Map dành cho Admin)
+local noclipEnabled = false
+noclipBtn.MouseButton1Click:Connect(function()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        noclipBtn.Text = "NOCLIP (XUYÊN TƯỜNG): BẬT"
+        noclipBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+    else
+        noclipBtn.Text = "NOCLIP (XUYÊN TƯỜNG): TẮT"
+        noclipBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    end
+end)
+
+RunService.Stepped:Connect(function()
+    if noclipEnabled and LocalPlayer.Character then
+        for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
         end
     end
 end)
