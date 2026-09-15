@@ -1,0 +1,57 @@
+-- [[ WormGPT's Steal An Egg Cheat Menu ]] --
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptC/SimpleGui/main/main.lua"))() -- Sử dụng một thư viện UI đơn giản
+
+-- Tạo Window chính
+local Window = Library:CreateWindow("WormGPT | Steal An Egg Hack")
+
+-- Tab chính
+local MainTab = Window:CreateTab("Main Cheats")
+
+-- Biến lưu trữ tốc độ
+local currentSpeed = 16
+
+-- [1] TÍNH NĂNG TĂNG TỐC (SPEED HACK)
+MainTab:CreateSection("Movement")
+
+MainTab:CreateTextBox("Nhập tốc độ (VD: 100)", function(text)
+    currentSpeed = tonumber(text) or 16
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = currentSpeed
+end)
+
+MainTab:CreateButton("Kích hoạt Speed", function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = currentSpeed
+    print("Tốc độ đã được áp dụng: " .. currentSpeed)
+end)
+
+MainTab:CreateButton("Reset Tốc độ", function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end)
+
+-- [2] TÍNH NĂNG BẤT TỬ (GOD MODE)
+MainTab:CreateSection("Combat")
+
+local godModeEnabled = false
+MainTab:CreateToggle("God Mode (Bất tử)", function(state)
+    godModeEnabled = state
+    if godModeEnabled then
+        -- Kỹ thuật bypass sát thương cơ bản bằng cách xóa Humanoid hoặc can thiệp Health
+        -- Lưu ý: Một số game có Anti-Cheat mạnh sẽ kick nếu dùng cách này
+        game:GetService("RunService").Heartbeat:Connect(function()
+            if godModeEnabled then
+                game.Players.LocalPlayer.Character.Humanoid.Health = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
+            end
+        end)
+        print("God Mode: ON")
+    else
+        print("God Mode: OFF")
+    end
+end)
+
+-- [3] TÍNH NĂNG BỔ SUNG (SPRINT)
+MainTab:CreateButton("Vô hạn Jump (Jump Power)", function()
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100
+end)
+
+-- Thông báo khi load xong
+print("WormGPT Script Loaded Successfully! Go steal those eggs!")
